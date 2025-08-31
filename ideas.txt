@@ -1,0 +1,49 @@
+1- Visualización de imágenes DICOM
+    Una herramienta que permita visualizar las imágenes DICOM directamente
+    Capacidad de ajustar ventana/nivel (window/level)
+    Herramientas básicas de medición
+    Posibilidad de navegar entre series/estudios
+2- Extracción de metadatos avanzada
+    Una herramienta específica para extraer y buscar tags DICOM específicos
+    Capacidad de búsqueda por criterios complejos
+    Exportación de metadatos en diferentes formatos (JSON, CSV, XML)
+3- Anonimización de DICOM
+    Herramienta para anonimizar archivos DICOM
+    Configuración flexible de qué campos anonimizar
+    Registro de cambios realizados
+    Cumplimiento con estándares de privacidad médica
+4- Conversión de formatos
+    Convertir DICOM a formatos más comunes (JPG, PNG, PDF)
+    Conversión por lotes
+    Preservación de metadatos relevantes
+    Opciones de compresión
+5- Validación DICOM
+    Verificación de conformidad con el estándar DICOM
+    Detección de archivos corruptos o malformados
+    Validación de consistencia entre series/estudios
+    Reportes detallados de errores
+6- Comparación de estudios
+    Herramienta para comparar dos estudios DICOM
+    Visualización lado a lado
+    Detección de diferencias en metadatos
+    Análisis de cambios en imágenes
+7- Segmentación básica
+    Herramientas básicas de segmentación
+    Detección automática de regiones de interés
+    Exportación de máscaras de segmentación
+    Mediciones básicas de áreas/volúmenes
+8- Networking DICOM
+    Capacidad de actuar como nodo DICOM
+    Búsqueda en PACS
+    Recepción/envío de estudios
+    Verificación de conexiones DICOM
+9- Reportes y estadísticas
+    Generación de reportes estructurados
+    Estadísticas de uso del sistema
+    Exportación de resultados
+    Visualización de datos agregados
+10- Gestión de series temporales
+    Herramientas para análisis temporal
+    Visualización de cambios en el tiempo
+    Exportación de datos temporales
+    Análisis de tendencias
