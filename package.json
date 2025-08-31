@@ -16,5 +16,10 @@
     "fs-extra": "^11.3.1",
     "path": "^0.12.7",
     "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
   }
 }

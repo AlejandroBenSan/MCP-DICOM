@@ -61,7 +61,7 @@ export class ROIAnalysisService {
       );
       return Array.from(pixelData);
     } catch (error) {
-      throw new Error(`Error al leer los datos de píxeles: ${error.message}`);
+      throw new Error(`Error al leer los datos de píxeles: ${error}`);
     }
   }
 
@@ -144,22 +144,22 @@ export class ROIAnalysisService {
     };
   }
 
-  private calculatePerimeter(mask: boolean[], pixelSpacing: { x: number; y: number }): number {
+  private calculatePerimeter(
+    mask: boolean[], 
+    rows: number, 
+    columns: number, 
+    pixelSpacing: { x: number; y: number }
+  ): number {
     let perimeter = 0;
-    const width = Math.floor(Math.sqrt(mask.length));
     
-    if (!Number.isInteger(width) || width * width !== mask.length) {
-      throw new Error("La máscara debe ser cuadrada");
-    }
-    
-    for (let y = 0; y < width; y++) {
-      for (let x = 0; x < width; x++) {
-        if (mask[y * width + x]) {
-          // Comprobar los 4 bordes
-          if (x === 0 || !mask[y * width + (x-1)]) perimeter += pixelSpacing.y;
-          if (x === width-1 || !mask[y * width + (x+1)]) perimeter += pixelSpacing.y;
-          if (y === 0 || !mask[(y-1) * width + x]) perimeter += pixelSpacing.x;
-          if (y === width-1 || !mask[(y+1) * width + x]) perimeter += pixelSpacing.x;
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < columns; x++) {
+        if (mask[y * columns + x]) {
+          // Verificar bordes
+          if (x === 0 || !mask[y * columns + (x-1)]) perimeter += pixelSpacing.y;
+          if (x === columns-1 || !mask[y * columns + (x+1)]) perimeter += pixelSpacing.y;
+          if (y === 0 || !mask[(y-1) * columns + x]) perimeter += pixelSpacing.x;
+          if (y === rows-1 || !mask[(y+1) * columns + x]) perimeter += pixelSpacing.x;
         }
       }
     }
