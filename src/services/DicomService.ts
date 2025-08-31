@@ -4,11 +4,29 @@ import dicomParser from "dicom-parser";
 import { DicomSummary, DicomFileDetail } from "../models/DicomTypes";
 
 export class DicomService {
+  private async getDicomFilesRecursively(folderPath: string): Promise<string[]> {
+    const files = await fs.readdir(folderPath);
+    let dicomFiles: string[] = [];
+
+    for (const file of files) {
+      const fullPath = path.join(folderPath, file);
+      const stat = await fs.stat(fullPath);
+
+      if (stat.isDirectory()) {
+        // Si es una carpeta, recorrer recursivamente
+        const subFiles = await this.getDicomFilesRecursively(fullPath);
+        dicomFiles = dicomFiles.concat(subFiles);
+      } else if (file.endsWith(".dcm") || !path.extname(file)) {
+        // Archivo DICOM (muchos no tienen extensión)
+        dicomFiles.push(fullPath);
+      }
+    }
+
+    return dicomFiles;
+  }
+
   async analyzeDicomFolder(dicomFolderPath: string): Promise<DicomSummary> {
-    const files = await fs.readdir(dicomFolderPath);
-    const dicomFiles = files.filter(
-      f => f.endsWith(".dcm") || !path.extname(f)
-    );
+    const dicomFiles = await this.getDicomFilesRecursively(dicomFolderPath);
 
     if (dicomFiles.length === 0) {
       throw new Error("No se encontraron archivos DICOM en la carpeta.");
@@ -25,8 +43,8 @@ export class DicomService {
     const patientsSet = new Set<string>();
     const studiesSet = new Set<string>();
 
-    for (const file of dicomFiles) {
-      const fileDetail = await this.processDicomFile(dicomFolderPath, file);
+    for (const filePath of dicomFiles) {
+      const fileDetail = await this.processDicomFile(filePath);
       if (fileDetail) {
         summary.details.push(fileDetail);
         patientsSet.add(fileDetail.patientName);
@@ -41,10 +59,10 @@ export class DicomService {
     return summary;
   }
 
-  private async processDicomFile(folderPath: string, fileName: string): Promise<DicomFileDetail | null> {
+  private async processDicomFile(filePath: string): Promise<DicomFileDetail | null> {
     try {
-      const filePath = path.join(folderPath, fileName);
       const buffer = await fs.readFile(filePath);
+      const fileName = path.basename(filePath);
       const dataSet = dicomParser.parseDicom(buffer);
 
       const allTags: Record<string, any> = {};
@@ -90,7 +108,7 @@ export class DicomService {
         allTags
       };
     } catch (err) {
-      console.warn(`No se pudo parsear ${fileName}:`, err.message);
+      console.warn(`No se pudo parsear ${path.basename(filePath)}:`, err.message);
       return null;
     }
   }
