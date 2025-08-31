@@ -1,3 +1,18 @@
+export interface ROIStats {
+  mean: number;
+  min: number;
+  max: number;
+  stdDev: number;
+  area: number;  // en mm²
+  perimeter: number;  // en mm
+  coordinates: Point[];
+}
+
+export interface Point {
+  x: number;
+  y: number;
+}
+
 export interface DicomSummary {
   totalFiles: number;
   patients: string[];
